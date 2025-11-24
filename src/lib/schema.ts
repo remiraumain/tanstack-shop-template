@@ -1,4 +1,4 @@
-import { pgEnum, pgTable, serial, varchar, integer, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { pgEnum, pgTable, serial, varchar, integer, text, timestamp, uniqueIndex, boolean } from "drizzle-orm/pg-core";
 
 export const orderStatus = pgEnum("order_status", [
 	"pending",
@@ -15,9 +15,10 @@ export const categories = pgTable(
 		slug: varchar("slug", { length: 100 }).notNull(),
 		createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 	},
-	(table) => ({
-		slugIdx: uniqueIndex("categories_slug_idx").on(table.slug),
-	}),
+	(table) => [
+		uniqueIndex("categories_slug_idx").on(table.slug),
+	]
+
 );
 
 export const categoryTranslations = pgTable(
@@ -30,12 +31,12 @@ export const categoryTranslations = pgTable(
 		locale: varchar("locale", { length: 5 }).notNull(),
 		name: varchar("name", { length: 255 }).notNull(),
 	},
-	(table) => ({
-		categoryLocaleIdx: uniqueIndex("category_translations_category_locale_idx").on(
+	(table) => [
+		uniqueIndex("category_translations_category_locale_idx").on(
 			table.categoryId,
 			table.locale,
 		),
-	}),
+	]
 );
 
 export const products = pgTable(
@@ -52,9 +53,9 @@ export const products = pgTable(
 		createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 		updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 	},
-	(table) => ({
-		skuIdx: uniqueIndex("products_sku_idx").on(table.sku),
-	}),
+	(table) => [
+		uniqueIndex("products_sku_idx").on(table.sku),
+	],
 );
 
 export const productTranslations = pgTable(
@@ -68,28 +69,33 @@ export const productTranslations = pgTable(
 		name: varchar("name", { length: 255 }).notNull(),
 		description: text("description"),
 	},
-	(table) => ({
-		productLocaleIdx: uniqueIndex("product_translations_product_locale_idx").on(
+	(table) => [
+		uniqueIndex("product_translations_product_locale_idx").on(
 			table.productId,
-			table.locale,
-		),
-	}),
+			table.locale
+		)
+	],
 );
 
 export const users = pgTable(
-	"users",
+	"user",
 	{
-		id: serial("id").primaryKey(),
-		email: varchar("email", { length: 255 }).notNull(),
+		id: text("id").primaryKey(),
+		name: text("name").notNull(),
+		email: text("email").notNull(),
+		emailVerified: boolean("emailVerified").notNull().default(false),
+		image: text("image"),
+		createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
+		updatedAt: timestamp("updatedAt", { withTimezone: true }).notNull().defaultNow(),
 	},
-	(table) => ({
-		emailIdx: uniqueIndex("users_email_idx").on(table.email),
-	}),
+	(table) => [
+		uniqueIndex("user_email_idx").on(table.email),
+	],
 );
 
 export const orders = pgTable("orders", {
 	id: serial("id").primaryKey(),
-	userId: integer("user_id").notNull().references(() => users.id),
+	userId: text("user_id").notNull().references(() => users.id),
 	status: orderStatus("status").notNull().default("pending"),
 	totalAmount: integer("total_amount").notNull(),
 	paymentIntentId: varchar("payment_intent_id", { length: 255 }),
