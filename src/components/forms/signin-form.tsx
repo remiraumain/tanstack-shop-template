@@ -16,7 +16,7 @@ import { getRouter } from "@/router";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 
-export function SignInForm() {
+export function SignInForm({ onSuccess }: { onSuccess?: () => void }) {
   const [serverError, setServerError] = useState<string | null>(null);
   const router = getRouter();
 
@@ -43,6 +43,8 @@ export function SignInForm() {
         }
         return;
       }
+
+      onSuccess?.();
 
       toast.success("Vous êtes connecté.");
 
