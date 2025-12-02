@@ -1,12 +1,5 @@
 import { signInSchema } from "@/modules/auth/schema";
 import { useForm } from "@tanstack/react-form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -53,86 +46,75 @@ export function SignInForm({ onSuccess }: { onSuccess?: () => void }) {
   });
 
   return (
-    <Card className="mx-auto w-full max-w-md border-0">
-      <CardHeader>
-        <CardTitle>Créer un compte</CardTitle>
-        <CardDescription>
-          Créer un compte pour accéder à toutes les fonctionnalités.
-        </CardDescription>
-      </CardHeader>
-
-      <CardContent>
-        <form
-          id="signin-form"
-          className="space-y-6"
-          onSubmit={(e) => {
-            e.preventDefault();
-            form.handleSubmit();
-          }}
-        >
-          <form.Field name="email">
-            {(field) => (
-              <Field>
-                <FieldLabel>Email</FieldLabel>
-                <Input
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  type="email"
-                  autoComplete="email"
-                />
-                {field.state.meta.errors?.length > 0 && (
-                  <FieldDescription className="text-destructive">
-                    {field.state.meta.errors[0]?.message}
-                  </FieldDescription>
-                )}
-              </Field>
-            )}
-          </form.Field>
-
-          <form.Field name="password">
-            {(field) => (
-              <Field>
-                <FieldLabel>Mot de passe</FieldLabel>
-                <Input
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  type="password"
-                  autoComplete="new-password"
-                />
-                {field.state.meta.errors?.length > 0 && (
-                  <FieldDescription className="text-destructive">
-                    {field.state.meta.errors[0]?.message}
-                  </FieldDescription>
-                )}
-              </Field>
-            )}
-          </form.Field>
-
-          {serverError && (
-            <FieldDescription className="text-destructive">
-              {serverError}
-            </FieldDescription>
-          )}
-
-          <FieldGroup>
-            <Field className="px-6 py-6">
-              <Button
-                type="submit"
-                form="signin-form"
-                className="w-full"
-                disabled={form.state.isSubmitting}
-              >
-                {form.state.isSubmitting ? "Connexion..." : "Se connecter"}
-              </Button>
-              <FieldDescription className="px-6 text-center">
-                Pas encore inscrit ? <Link to="/register">Créer un compte</Link>
+    <form
+      id="signin-form"
+      className="space-y-6"
+      onSubmit={(e) => {
+        e.preventDefault();
+        form.handleSubmit();
+      }}
+    >
+      <form.Field name="email">
+        {(field) => (
+          <Field>
+            <FieldLabel>Email</FieldLabel>
+            <Input
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={(e) => field.handleChange(e.target.value)}
+              type="email"
+              autoComplete="email"
+            />
+            {field.state.meta.errors?.length > 0 && (
+              <FieldDescription className="text-destructive">
+                {field.state.meta.errors[0]?.message}
               </FieldDescription>
-            </Field>
-          </FieldGroup>
-        </form>
-      </CardContent>
-    </Card>
+            )}
+          </Field>
+        )}
+      </form.Field>
+
+      <form.Field name="password">
+        {(field) => (
+          <Field>
+            <FieldLabel>Mot de passe</FieldLabel>
+            <Input
+              value={field.state.value}
+              onBlur={field.handleBlur}
+              onChange={(e) => field.handleChange(e.target.value)}
+              type="password"
+              autoComplete="new-password"
+            />
+            {field.state.meta.errors?.length > 0 && (
+              <FieldDescription className="text-destructive">
+                {field.state.meta.errors[0]?.message}
+              </FieldDescription>
+            )}
+          </Field>
+        )}
+      </form.Field>
+
+      {serverError && (
+        <FieldDescription className="text-destructive">
+          {serverError}
+        </FieldDescription>
+      )}
+
+      <FieldGroup>
+        <Field className="px-6 py-6">
+          <Button
+            type="submit"
+            form="signin-form"
+            className="w-full"
+            disabled={form.state.isSubmitting}
+          >
+            {form.state.isSubmitting ? "Connexion..." : "Se connecter"}
+          </Button>
+          <FieldDescription className="px-6 text-center">
+            Pas encore inscrit ? <Link to="/register">Créer un compte</Link>
+          </FieldDescription>
+        </Field>
+      </FieldGroup>
+    </form>
   );
 }

@@ -1,6 +1,11 @@
 import { SignInForm } from "@/components/forms/signin-form";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { signOut, useSession } from "@/modules/auth/auth-client";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
@@ -38,9 +43,13 @@ function App() {
           )}
           <Dialog open={open} onOpenChange={setOpen}>
             <Button variant="outline" onClick={() => setOpen(true)}>
-              Login
+              Login dialog
             </Button>
             <DialogContent className="bg-card">
+              <DialogTitle>Connectez-vous</DialogTitle>
+              <DialogDescription>
+                Pour accéder à toutes les fonctionnalités.
+              </DialogDescription>
               <SignInForm onSuccess={() => setOpen(false)} />
             </DialogContent>
           </Dialog>
