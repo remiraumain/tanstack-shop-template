@@ -38,7 +38,7 @@ function App() {
             </Button>
           ) : (
             <Button asChild>
-              <Link to="/register">New user</Link>
+              <Link to="/auth/signup">New user</Link>
             </Button>
           )}
           <Dialog open={open} onOpenChange={setOpen}>
