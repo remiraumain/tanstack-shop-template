@@ -32,6 +32,7 @@ export function SignInForm({ onSuccess }: { onSuccess?: () => void }) {
 
       if (error) {
         if (error.code === "EMAIL_NOT_VERIFIED") {
+          setServerError("Email non vérifié.");
           setEmailUsed(value.email);
           setIsEmailSent(true);
 
